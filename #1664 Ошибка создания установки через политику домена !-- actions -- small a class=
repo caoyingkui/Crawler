@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<!-- Server: sfn-web-13 -->
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]>-->
+<html lang="en" class="no-js"> <!--<![endif]-->
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+    <title>7-Zip / Bugs / #1664 Ошибка создания установки через политику домена</title>
+    
+
+
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(['trackPageView', document.title, {
+        dimension1: 'sevenzip',
+        dimension2: 'tickets'
+  }]);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//analytics.slashdotmedia.com/";
+    _paq.push(['setTrackerUrl', u+'sf.php']);
+    _paq.push(['setSiteId', 39]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'sf.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img src="//analytics.slashdotmedia.com/sf.php?idsite=39" style="border:0;" alt="" /></p></noscript>
+
+<meta id="project_name" name="project_name" content='sevenzip' />
+<!--[if lt IE 7 ]>
+  <script src="https://a.fsdn.com/allura/nf/1478640570/_ew_/theme/sftheme/js/sftheme/vendor/dd_belatedpng.js"></script>
+  <script> DD_belatedPNG.fix('img, .png_bg'); //fix any <img> or .png_bg background-images </script>
+<![endif]-->
+<link href='//fonts.googleapis.com/css?family=Ubuntu:regular' rel='stylesheet' type='text/css'>
+    
+        <!-- ew:head_css -->
+
+    
+        <link rel="stylesheet"
+                type="text/css"
+                href="https://a.fsdn.com/allura/nf/1478640570/_ew_/_slim/css?href=allura%2Fcss%2Fforge%2Fhilite.css%3Btool%2Ftickets%2Fcss%2Ftracker.css%3Ballura%2Fcss%2Fforge%2Ftooltipster.css"
+                >
+    
+        <link rel="stylesheet"
+                type="text/css"
+                href="https://a.fsdn.com/allura/nf/1478640570/_ew_/allura/css/font-awesome.min.css"
+                >
+    
+        <link rel="stylesheet"
+                type="text/css"
+                href="https://a.fsdn.com/allura/nf/1478640570/_ew_/theme/sftheme/css/forge.css"
+                >
+    
+        <link rel="stylesheet"
+                type="text/css"
+                href="https://a.fsdn.com/allura/nf/1478640570/_ew_/css/simplemde.min.css"
+                >
+    
+        <link rel="stylesheet"
+                type="text/css"
+                href="https://a.fsdn.com/allura/nf/1478640570/_ew_/_slim/css?href=css%2Fmarkitup_sf.css"
+                >
+    
+        <style>
+        div.moderate {
+            color:grey;
+        }
+        </style>
+    
+        <link rel="stylesheet"
+                type="text/css"
+                href="https://a.fsdn.com/allura/nf/1478640570/_ew_/_slim/css?href=css%2Fpage_list.css%3Bcss%2Fjquery.tagsinput.css%3Bcss%2Fautocomplete.css%3Bcss%2Fcombobox.css"
+                >
+    
+        
+<!-- /ew:head_css -->
+
+    
+    
+        <!-- ew:head_js -->
+
+    
+        <script type="text/javascript" src="https://a.fsdn.com/allura/nf/1478640570/_ew_/_slim/js?href=allura%2Fjs%2Fjquery-base.js%3Btheme%2Fsftheme%2Fjs%2Fsftheme%2Fvendor%2Fmodernizr.3.3.1.custom.js%3Btheme%2Fsftheme%2Fjs%2Fsftheme%2Fshared_head.js"></script>
+    
+        
+<!-- /ew:head_js -->
+
+    
+
+    
+        <style type="text/css">
+            #page-body.project---init-- #top_nav { display: none; }
+
+#page-body.project---init-- #nav_menu_holder { display: none; margin-bottom: 0; }
+
+#page-body.project---init-- #content_base {margin-top: 0; }
+        </style>
+    
+    
+<style type="text/css">
+  input[name='ticket_form.summary']{
+    top: 5px;
+    left: 10px;
+    position: absolute;
+    z-index: 21;
+  }
+  div.form_holder .reply textarea{
+    height: 60px;
+  }
+  div.actions{
+    width: 150px;
+  }
+  .markdown_edit textarea {
+    height: 100px;
+  }
+</style>
+
+    <style>.XfwmhCpapmwCuFTKyaRBlXbc {
+        display: none
+    }</style>
+
+    
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="feed.rss"/>
+  <link rel="alternate" type="application/atom+xml" title="Atom" href="feed.atom"/>
+
+    
+    
+
+
+<script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    function _add_tracking(prefix, tracking_id) {
+        ga('create', tracking_id, {cookieDomain: 'auto', 'name': prefix});
+        
+        ga(prefix+'.set', 'dimension9', 'sevenzip');
+        ga(prefix+'.set', 'dimension10', 'tickets');
+        
+        ga(prefix+'.set', 'dimension13', 'Logged Out');
+        ga(prefix+'.send', 'pageview');
+    }
+      _add_tracking('sfnt1', 'UA-32013-6');
+      _add_tracking('sfnt2', 'UA-36130941-1');
+    
+</script>
+</head>
+
+<body class="" id="forge">
+
+    
+        <!-- ew:body_top_js -->
+
+    
+        
+<!-- /ew:body_top_js -->
+
+    
+
+
+
+
+<header id="site-header">
+    <div class="wrapper">
+        <a href="/" class="logo">
+            <span>SourceForge</span>
+        </a>
+        
+        <form method="get" action="/directory/">
+            <input type="text" id="words" name="q" placeholder="Search">
+        </form>
+        
+        <!--Switch to {language}-->
+        <nav id="nav-site">
+            <a href="/directory/" title="Browse our software.">Browse</a>
+            <a href="/directory/enterprise" title="Browse our Enterprise software.">Enterprise</a>
+            <a href="/blog/" title="Read the latest news from the SF HQ.">Blog</a>
+            <a href="//deals.sourceforge.net/?utm_source=sourceforge&amp;utm_medium=navbar&amp;utm_campaign=homepage" title="Discover and Save on the Best Gear, Gadgets, and Software" class="featured-link" target="_blank">Deals</a>
+            <a href="/support" title="Contact us for help and feedback.">Help</a>
+            <a href="/create"  class="featured-link blue"  style="" title="Create and publish Open Source software for free.">Create</a>
+        </nav>
+        <nav id="nav-account">
+            
+              <div class="logged_out">
+                <a href="/auth/">Log In</a>
+                <span>or</span>
+                <a href="https://sourceforge.net/user/registration/">Join</a>
+              </div>
+            
+        </nav>
+    </div>
+</header>
+<header id="site-sec-header">
+    <div class="wrapper">
+        <nav id="nav-hubs">
+            <h4>Solution Centers</h4>
+            <a href="http://goparallel.sourceforge.net/">Go Parallel</a>
+        </nav>
+        <nav id="nav-collateral">
+            <a href="https://library.slashdotmedia.com/">Resources</a>
+            <a href="/user/newsletters?source=sfnet_header">Newsletters</a>
+            <a href="/cloud-storage-providers/?source=sfnet_header">Cloud Storage Providers</a>
+            <a href="/business-voip/?source=sfnet_header">Business VoIP Providers</a>
+            
+            <a href="/call-center-providers/?source=sfnet_header">Call Center Providers</a>
+        </nav>
+    </div>
+</header>
+
+
+    
+    
+    
+
+<section id="page-body" class=" neighborhood-Projects project-sevenzip mountpoint-bugs">
+<div id="nav_menu_holder">
+    
+        
+            
+
+
+
+    
+    
+    
+    
+    <nav id="breadcrumbs">
+        <ul>
+            <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a itemprop="url" href="/">Home</a></li>
+            <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a itemprop="url" href="/directory">Browse</a></li>
+            
+            
+                
+                
+            
+            
+                
+            
+            
+            
+                <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a itemprop="url" href="/p/sevenzip/">7-Zip</a></li>
+                
+            
+            
+                <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">Bugs</li>
+                
+            
+        </ul>
+    </nav>
+    
+    
+    
+  
+    
+      <img src="/p/sevenzip/icon?2012-12-07 16:23:31+00:00" class="project_icon" alt="Project Logo">
+    
+        <h1 class="project_title">
+            <a href="/p/sevenzip/" class="project_link">7-Zip</a>
+        </h1>
+    
+    
+    
+    <h2 class="project_summary with-icon">
+        A free file archiver for extremely high compression
+    </h2>
+    
+    <div class="brought-by with-icon">
+        Brought to you by:
+        
+        
+            
+                <a href="/u/ipavlov/">ipavlov</a>
+            </div>
+    
+
+        
+    
+</div>
+    <div id="top_nav" class="">
+        
+            
+<div id="top_nav_admin">
+<ul class="dropdown">
+  
+    <li class="">
+        <a href="/projects/sevenzip/" class="tool-summary-32">
+            Summary
+        </a>
+        
+        
+    </li>
+  
+    <li class="">
+        <a href="/projects/sevenzip/files/" class="tool-files-32">
+            Files
+        </a>
+        
+        
+    </li>
+  
+    <li class="">
+        <a href="/projects/sevenzip/reviews" class="tool-reviews-32">
+            Reviews
+        </a>
+        
+        
+    </li>
+  
+    <li class="">
+        <a href="/projects/sevenzip/support" class="tool-support-32">
+            Support
+        </a>
+        
+        
+    </li>
+  
+    <li class="">
+        <a href="/p/sevenzip/wiki/" class="tool-wiki-32">
+            Wiki
+        </a>
+        
+        
+    </li>
+  
+    <li class="selected">
+        <a href="/p/sevenzip/_list/tickets" class="tool-tickets-32">
+            Tickets ▾
+        </a>
+        
+        
+            <ul>
+                
+                    <li class=""><a href="/p/sevenzip/patches/">Patches</a></li>
+                
+                    <li class="selected"><a href="/p/sevenzip/bugs/">Bugs</a></li>
+                
+                    <li class=""><a href="/p/sevenzip/feature-requests/">Feature Requests</a></li>
+                
+            </ul>
+        
+    </li>
+  
+    <li class="">
+        <a href="/p/sevenzip/news/" class="tool-blog-32">
+            News
+        </a>
+        
+        
+    </li>
+  
+    <li class="">
+        <a href="/p/sevenzip/discussion/" class="tool-discussion-32">
+            Discussion
+        </a>
+        
+        
+    </li>
+  
+  
+</ul>
+</div>
+
+
+        
+    </div>
+    <div id="content_base">
+        
+            
+                
+                    
+
+
+<div id="sidebar">
+  
+    <form id="search" method="GET" action="/p/sevenzip/bugs/search/">
+      <input name="q" type="text" title="Search Bugs" placeholder="Search Bugs">
+    </form>
+  
+    
+    
+      
+      
+        
+    
+      <ul class="sidebarmenu">
+      
+    
+  <li>
+      
+        <a class="icon sidebar-disabled" href="/p/sevenzip/bugs/new/" title="To create a new ticket, you must be authorized by the project admin."><i class="fa fa-plus-circle"></i>
+      
+      <span>Create Ticket</span>
+      </a>
+  </li>
+  
+      
+        
+    
+  <li>
+      
+        <a class="icon" href="/p/sevenzip/bugs/stats" title="Stats"><i class="fa fa-line-chart"></i>
+      
+      <span>View Stats</span>
+      </a>
+  </li>
+  
+      
+        
+    
+      </ul>
+      
+    
+    
+      <h3 class="">Group</h3>
+    
+  
+      
+        
+    
+    
+      <h3 class="">Searches</h3>
+    
+  
+      
+        
+    
+      <ul class="sidebarmenu">
+      
+    
+  <li>
+      
+        <a href="/p/sevenzip/bugs/search/?q=%21status%3Aclosed-wont-fix+%26%26+%21status%3Aclosed-later+%26%26+%21status%3Aclosed-rejected+%26%26+%21status%3Aclosed-out-of-date+%26%26+%21status%3Aclosed-accepted+%26%26+%21status%3Aclosed-works-for-me+%26%26+%21status%3Aclosed+%26%26+%21status%3Aclosed-duplicate+%26%26+%21status%3Aclosed-invalid+%26%26+%21status%3Aclosed-fixed&amp;sort=mod_date_dt+desc"  class="search_bin">
+      
+      <span>Changes</span>
+      </a>
+  </li>
+  
+      
+        
+    
+  <li>
+      
+        <a href="/p/sevenzip/bugs/search/?q=status%3Aclosed-wont-fix+or+status%3Aclosed-later+or+status%3Aclosed-rejected+or+status%3Aclosed-out-of-date+or+status%3Aclosed-accepted+or+status%3Aclosed-works-for-me+or+status%3Aclosed+or+status%3Aclosed-duplicate+or+status%3Aclosed-invalid+or+status%3Aclosed-fixed"  class="search_bin">
+      
+      <span>Closed Tickets</span>
+      </a>
+  </li>
+  
+      
+        
+    
+  <li>
+      
+        <a href="/p/sevenzip/bugs/search/?q=%21status%3Aclosed-wont-fix+%26%26+%21status%3Aclosed-later+%26%26+%21status%3Aclosed-rejected+%26%26+%21status%3Aclosed-out-of-date+%26%26+%21status%3Aclosed-accepted+%26%26+%21status%3Aclosed-works-for-me+%26%26+%21status%3Aclosed+%26%26+%21status%3Aclosed-duplicate+%26%26+%21status%3Aclosed-invalid+%26%26+%21status%3Aclosed-fixed"  class="search_bin">
+      
+      <span>Open Tickets</span>
+      </a>
+  </li>
+  
+      
+        
+    
+      </ul>
+      
+    
+    
+      <h3 class="">Help</h3>
+    
+  
+      
+        
+    
+      <ul class="sidebarmenu">
+      
+    
+  <li>
+      
+        <a href="/p/sevenzip/bugs/markdown_syntax"  >
+      
+      <span>Formatting Help</span>
+      </a>
+  </li>
+  
+      
+    
+    
+      </ul>
+      
+    
+    
+      <script>
+                $(function() {
+            $.ajax({
+                url:'/p/sevenzip/bugs/bin_counts',
+                success: function(data) {
+                    var $spans = $('.search_bin > span');
+                    $.each(data.bin_counts, function(i, item) {
+                        $spans.each(function() {
+                            if ($(this).text() === item.label) {
+                                $(this).after('<small>' + item.count + '</small>').fadeIn('fast');
+                            }
+                        });
+                    });
+                }
+            });
+            if ($('.milestones').length > 0) {
+                $.ajax({
+                    url: '/p/sevenzip/bugs/milestone_counts',
+                    success: function(data) {
+                        var $spans = $('.milestones > span');
+                        $.each(data.milestone_counts, function(i, item) {
+                            $spans.each(function() {
+                                if ($(this).text() === item.name) {
+                                    $(this).after('<small>' + item.count + '</small>').fadeIn('fast');
+                                }
+                            });
+                        });
+                    }
+                });
+            }
+        });
+      </script>
+    
+</div>
+                
+                
+            
+            
+                
+            
+            <div class="grid-20 pad">
+                <h2 class="dark title">#1664 Ошибка создания установки через политику домена
+                    <!-- actions -->
+                    <small>
+                        
+  <a class="icon" href="feed.rss" title="Follow this Ticket"><i class="fa fa-rss"></i></a>
+
+
+
+
+                    </small>
+                    <!-- /actions -->
+                </h2>
+                
+<div class="editbox">
+  
+  <div class="view_holder">
+      
+      <div class="grid-4">
+        <label class="simple">Status: </label>
+        <span class="open">open</span>
+      </div>
+      <div class="grid-5 ticket-assigned-to">
+        <label class="simple">Owner: </label>
+        
+          nobody
+        
+      </div>
+      <div class="grid-4">
+        <label class="simple">Labels: </label>
+        
+          None
+        
+      </div>
+    <div style="clear:both"></div>
+    
+    
+      
+      
+        
+      
+        
+          
+            <div class="grid-4">
+              <label class="simple">Priority:</label>
+              
+                5
+              
+            </div>
+          
+        
+      
+    
+    <div style="clear:both"></div>
+    <div class="grid-4">
+      <label class="simple">Updated:</label>
+      <span id="updated_id">
+    <span title="Sat May 14, 2016 03:11 PM UTC">
+      2016-05-14
+    </span>
+</span>
+    </div>
+    <div class="grid-4">
+      <label class="simple">Created:</label>
+      
+    <span title="Tue Apr 26, 2016 01:18 PM UTC">
+      2016-04-26
+    </span>
+
+    </div>
+    <div class="grid-5">
+      <label class="simple">Creator:</label>
+      
+        
+            <a href="/u/tsklab/">
+                
+                    Konstantin Tsvetkov
+                
+            </a>
+        
+    
+    </div>
+    <div class="grid-4">
+      <label class="simple">Private:</label>
+      No
+        
+    </div>
+  </div>
+</div>
+
+                <div>
+                    
+                    
+
+<div id="ticket_content">
+  <div class="markdown_content"><hr/>
+<h2 id="7z1514msi">7z1514.msi</h2>
+<p>Сбой операции добавления. Невозможно извлечь информацию о развертывании пакета. Проверьте правильность пакета.</p>
+<hr/>
+<h2 id="_1">ОК</h2></div>
+  
+</div>
+
+                </div>
+                
+                
+  
+  
+  <div id="discussion_holder">
+    <h2>Discussion</h2>
+    
+    
+
+<div>
+                <div class="row">
+                        <div class="column grid_12">
+      
+        <div>
+  <div class="page_list">
+    
+  </div>
+  <div class="clear"></div>
+</div>
+      
+      <div id="comment">
+        
+          
+            
+            <ul>
+              <!-- post_thread -->
+<li>
+
+
+
+  
+
+
+
+<div>
+  <div id="a85a" class="discussion-post">
+    
+    <div class="row">
+      <div class="grid-2 tcenter gravatar">
+       <p class="gravatar">
+        
+        
+  
+    <img src="https://secure.gravatar.com/avatar/f5f059268a7f276bd04e3bf40a7863ad?r=pg"
+         alt="liyan"
+         title="liyan"
+         class="emboss x48">
+  
+       </p>
+      </div>
+      
+      
+      <div class="grid-16 post-content bubble" style="width: 652px;  ">
+          <div class="header">
+            
+        
+            <a href="/u/lyfd123/">
+                
+                    liyan
+                
+            </a>
+        
+     - <i style="color: #777">
+    <span title="Fri May 13, 2016 01:36 PM UTC">
+      2016-05-13
+    </span>
+</i>
+
+            <div class="tools">
+            
+            <a href="https://sourceforge.net/p/sevenzip/bugs/1664/#a85a" title="Shortlink" class="little_link shortlink icon btn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+              <span><i class="fa fa-link" aria-hidden="true"></i></span></a>
+
+            
+
+                
+            </div>
+          </div>
+          <div class="display_post">
+          
+            
+
+            <div class="markdown_content"><p>I'm sorry I have tried but can't find where to post a new bug report, so I'll put my bug here...<br/>
+I'm using the latest and newly installed win10  named as "cn_windows_10_multiple_editions_version_1511_updated_feb_2016_x64_dvd_8380088", but I can't drag a new file to 7-zip(ver.15.x and 16.0.0) window. However, when I swithed to win7 which was also newly installed, I can drag any file to 7-zip window. So I can tell that 7-zip have a compatibility issue with the latest win10.</p></div>&nbsp;
+            
+  
+            
+          
+        </div>
+        
+        
+        
+        </div>
+
+      <div class="shortlink_popup modal" style="display: none">
+        <a class="icon close" href="#" title="Close"><i class="fa fa-close"></i></a>
+        If you would like to refer to this comment somewhere else in this project, copy and paste the following link:
+        <input type="text" style="width:100%" value="https://sourceforge.net/p/sevenzip/bugs/1664/#a85a">
+      </div>
+    </div>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+  </div>
+    <!-- lightbox_me div that will dynamically load attachment image -->
+  <div id="lightbox" style="display:none; height: 90%">
+      <img style="width: inherit; height: inherit; display: block; margin-left: auto; margin-right: auto;">
+  </div>
+
+</div>
+    <!-- post_thread replies -->
+    <ul>
+    </ul>
+    <!-- post_thread /replies -->
+</li>
+<!-- /post_thread -->
+            </ul>
+            
+            <ul>
+              <!-- post_thread -->
+<li>
+
+
+
+  
+
+
+
+<div>
+  <div id="69a5" class="discussion-post">
+    
+    <div class="row">
+      <div class="grid-2 tcenter gravatar">
+       <p class="gravatar">
+        
+        
+  
+    <img src="/u/ipavlov/user_icon"
+         alt="Igor Pavlov"
+         title="Igor Pavlov"
+         class="emboss x48">
+  
+       </p>
+      </div>
+      
+      
+      <div class="grid-16 post-content bubble" style="width: 652px;  ">
+          <div class="header">
+            
+        
+            <a href="/u/ipavlov/">
+                
+                    Igor Pavlov
+                
+            </a>
+        
+     - <i style="color: #777">
+    <span title="Sat May 14, 2016 05:35 AM UTC">
+      2016-05-14
+    </span>
+</i>
+
+            <div class="tools">
+            
+            <a href="https://sourceforge.net/p/sevenzip/bugs/1664/#69a5" title="Shortlink" class="little_link shortlink icon btn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+              <span><i class="fa fa-link" aria-hidden="true"></i></span></a>
+
+            
+
+                
+            </div>
+          </div>
+          <div class="display_post">
+          
+            
+
+            <div class="markdown_content"><p>1) check that you use same 7-zip version in both systems<br/>
+2) what is archive type ?<br/>
+3) create some small 7z archive and try drag opearation to that archive.</p></div>&nbsp;
+            
+  
+            
+          
+        </div>
+        
+        
+        
+        </div>
+
+      <div class="shortlink_popup modal" style="display: none">
+        <a class="icon close" href="#" title="Close"><i class="fa fa-close"></i></a>
+        If you would like to refer to this comment somewhere else in this project, copy and paste the following link:
+        <input type="text" style="width:100%" value="https://sourceforge.net/p/sevenzip/bugs/1664/#69a5">
+      </div>
+    </div>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+  </div>
+    <!-- lightbox_me div that will dynamically load attachment image -->
+  <div id="lightbox" style="display:none; height: 90%">
+      <img style="width: inherit; height: inherit; display: block; margin-left: auto; margin-right: auto;">
+  </div>
+
+</div>
+    <!-- post_thread replies -->
+    <ul>
+    </ul>
+    <!-- post_thread /replies -->
+</li>
+<!-- /post_thread -->
+            </ul>
+            
+            <ul>
+              <!-- post_thread -->
+<li>
+
+
+
+  
+
+
+
+<div>
+  <div id="6168" class="discussion-post">
+    
+    <div class="row">
+      <div class="grid-2 tcenter gravatar">
+       <p class="gravatar">
+        
+        
+  
+    <img src="https://secure.gravatar.com/avatar/7963fe307a1a10be3f82ad45228c0730?r=pg"
+         alt="Konstantin Tsvetkov"
+         title="Konstantin Tsvetkov"
+         class="emboss x48">
+  
+       </p>
+      </div>
+      
+      
+      <div class="grid-16 post-content bubble" style="width: 652px;  ">
+          <div class="header">
+            
+        
+            <a href="/u/tsklab/">
+                
+                    Konstantin Tsvetkov
+                
+            </a>
+        
+     - <i style="color: #777">
+    <span title="Sat May 14, 2016 03:11 PM UTC">
+      2016-05-14
+    </span>
+</i>
+
+            <div class="tools">
+            
+            <a href="https://sourceforge.net/p/sevenzip/bugs/1664/#6168" title="Shortlink" class="little_link shortlink icon btn ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+              <span><i class="fa fa-link" aria-hidden="true"></i></span></a>
+
+            
+
+                
+            </div>
+          </div>
+          <div class="display_post">
+          
+            
+
+            <div class="markdown_content"><p>7z1600.msi and 7z1600-x64.msi deployed without errors. Thank you.</p></div>&nbsp;
+            
+  
+            
+          
+        </div>
+        
+        
+        
+        </div>
+
+      <div class="shortlink_popup modal" style="display: none">
+        <a class="icon close" href="#" title="Close"><i class="fa fa-close"></i></a>
+        If you would like to refer to this comment somewhere else in this project, copy and paste the following link:
+        <input type="text" style="width:100%" value="https://sourceforge.net/p/sevenzip/bugs/1664/#6168">
+      </div>
+    </div>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+  </div>
+    <!-- lightbox_me div that will dynamically load attachment image -->
+  <div id="lightbox" style="display:none; height: 90%">
+      <img style="width: inherit; height: inherit; display: block; margin-left: auto; margin-right: auto;">
+  </div>
+
+</div>
+    <!-- post_thread replies -->
+    <ul>
+    </ul>
+    <!-- post_thread /replies -->
+</li>
+<!-- /post_thread -->
+            </ul>
+            
+          
+        
+      </div>
+      <div style="clear:both"></div>
+      
+      <div style="clear:both"></div>
+    </div>
+  </div>
+</div>
+
+  </div>
+
+            </div>
+        
+    </div>
+</section>
+  
+
+
+<footer id="site-footer">
+    <div class="wrapper">
+<nav>
+            <h5>SourceForge</h5>
+            <a href="/about">About</a>
+            <a href="/blog/category/sitestatus/">Site Status</a>
+            <a href="http://twitter.com/sfnet_ops">@sfnet_ops</a>
+            <a id="allura-notice" href="http://allura.apache.org/">
+                <p>Powered by</p>
+                <p>Apache Allura™</p>
+                <img src="https://a.fsdn.com/allura/nf/1478640570/_ew_/theme/sftheme/images/sftheme/logo-black-svg_g.png" />
+            </a>
+        </nav>
+        <nav>
+            <h5>Find and Develop Software</h5>
+            <a href="/create/">Create a Project</a>
+            <a href="/directory/">Software Directory</a>
+            <a href="/top">Top Downloaded Projects</a>
+        </nav>
+        <nav>
+            <h5>Community</h5>
+            <a href="/blog/">Blog</a>
+            <a href="http://twitter.com/sourceforge">@sourceforge</a>
+            <a href="https://library.slashdotmedia.com/">Resources</a>
+        </nav>
+        <nav>
+            <h5>Help</h5>
+            <a href="http://p.sf.net/sourceforge/docs">Site Documentation</a>
+            <a href="/support">Support Request</a>
+        </nav>
+    </div>
+</footer>
+<footer id="site-copyright-footer">
+    <div class="wrapper">
+        <div id="copyright">
+            &copy; 2016 Slashdot Media. All Rights Reserved.<br />
+        </div>
+        <nav>
+            <a href="http://slashdotmedia.com/terms-of-use">Terms</a>
+            <a href="http://slashdotmedia.com/privacy-statement/">Privacy</a>
+            <span id='teconsent'></span>
+            <a href="http://slashdotmedia.com/opt-out-choices">Opt Out Choices</a>
+            <a href="http://slashdotmedia.com">Advertise</a>
+        </nav>
+    </div>
+</footer>
+
+
+
+    
+<div id="newsletter-floating" class="goth-form">
+    <h2>Get latest updates about Open Source Projects, Conferences and News.</h2>
+    <p>Sign up for the SourceForge newsletter:</p>
+    
+<form action="/user/newsletters/subscribe" method="post">
+    <div class="form">
+        <input type="email" name="XZjSVW16x5NGEVFmaQjGK3w7lSNo"  placeholder="email@address.com" value="">
+    <input type="submit" value="Subscribe" class="bt">
+    </div>
+    <div class="fielderror"></div>
+
+    <p class="details">
+    <span class="fielderror"></span>
+    <label>
+        <input type="checkbox" required name="XZDKXVES4S4cXTPUmu-PXTCnBcgM" value="true" checked>I agree to receive quotes, newsletters and other information from sourceforge.net and its partners regarding IT services and products. I understand that I can withdraw my consent at any time. Please refer to our <a href="https://slashdotmedia.com/privacy-statement/">Privacy Policy</a> or <a href="/support">Contact Us</a> for more details
+        <input type="hidden" name="Xbj-dX1OuepC5ANR5KxEROiE88WY" value="true">
+    </label>
+    </p>
+
+    <input type="hidden" name="source" value="floating">
+    <input type="hidden" name="XbzKXT1mpV4qJDch4IKTySkn4iec" value="CN">
+    <input type="hidden" name="XcDKXT1mpV4qJDch4IDqjdwZ0bIU" value="ip_address">
+    <input type="hidden" name="XaD-dTUSxQIeiC9VvhEeCIo2ACLQ" value="sitewide">
+    <input type="hidden" name="XaD-dTUSxQIeiC9VvhEeCIo2ACLQ" value="research">
+    <input type="hidden" name="XaD-dTUSxQIeiC9VvhEeCIo2ACLQ" value="events">
+    <input type="hidden" name="XaD-dTUSxQIeiC9VvhEeCIo2ACLQ" value="thirdparty">
+    <input type="hidden" name="XaD-dTUSxQIeiC9VvhEeCIo2ACLQ" value="all">
+    <input type="hidden" name="XYDqVT_b_d8ko6KBIH6Kt-zQ8W2o" value="">
+    
+  <input type="hidden" name="_visit_cookie" value="None"/>
+    <input id="w-1a0" name="timestamp" type="hidden" value="1479193210">
+    <input id="w-1a1" name="spinner" type="hidden" value="XY1H4OjfdJfPWbqccRWXQGHMGD-A">
+    <p class="XfwmhCpapmwCuFTKyaRBlXbc">
+    <label for="XZDmXVFKkFcMXTPUmu-PXTCnBcgM">You seem to have CSS turned off.
+        Please don't fill out this field.</label><br>
+    <input id="XZDmXVFKkFcMXTPUmu-PXTCnBcgM" name="XZTmXVFKkFTL0PJ3iw2KEQrR77Kc" type="text"><br></p>
+    <p class="XfwmhCpapmwCuFTKyaRBlXbc">
+    <label for="XZDmXVFKkFcIXTPUmu-PXTCnBcgM">You seem to have CSS turned off.
+        Please don't fill out this field.</label><br>
+    <input id="XZDmXVFKkFcIXTPUmu-PXTCnBcgM" name="XZTmXVFKkFDL0PJ3iw2KEQrR77Kc" type="text"><br></p>
+</form>
+
+    <a id="btn-float-close">No, thanks</a>
+</div>
+
+
+<div id="messages">
+    
+</div>
+
+
+    <!-- ew:body_js -->
+
+
+    <script type="text/javascript" src="https://a.fsdn.com/allura/nf/1478640570/_ew_/_slim/js?href=allura%2Fjs%2Fjquery.notify.js%3Ballura%2Fjs%2Fjquery.tooltipster.js%3Ballura%2Fjs%2Fsylvester.js%3Ballura%2Fjs%2Ftwemoji.min.js%3Ballura%2Fjs%2Fpb.transformie.min.js%3Ballura%2Fjs%2Fallura-base.js%3Ballura%2Fjs%2Fadmin_modal.js%3Bjs%2Fjquery.lightbox_me.js%3Bjs%2Fsimplemde.min.js%3Bjs%2Fsf_markitup.js%3Bjs%2Fjquery.tagsinput.js%3Bjs%2Fcombobox.js%3Bjs%2Fvote.js%3Btheme%2Fsftheme%2Fjs%2Fsftheme%2Fshared.js"></script>
+
+    
+<!-- /ew:body_js -->
+
+
+
+    <!-- ew:body_js_tail -->
+
+
+    <script type="text/javascript">$(document).ready(function () {
+            $("a.attachment_form_add_button").click(function(evt){
+                $(this).hide();
+                $(".attachment_form_fields", this.parentNode).show();
+                evt.preventDefault();
+            });
+            $("a.cancel_edit_post").click(function(evt){
+                $("textarea", this.parentNode).val($("input.original_value", this.parentNode).val());
+                $(".attachment_form_fields input", this.parentNode).val('');
+                evt.preventDefault();
+            });
+         });
+
+        (function () {
+            $('div.discussion-post').each(function () {
+                var post = this;
+                $('.submit', post).button();
+                $('.moderate_post', post).click(function(e){
+                    e.preventDefault();
+                    var mod = $(this).text();
+
+                    if ($(this).hasClass('delete')) mod = 'Delete';
+                    else if ($(this).hasClass('approve')) mod = 'Approve';
+                    else if ($(this).hasClass('spam')) mod = 'Spam';
+                    else if ($(this).hasClass('undo')) mod = 'Undo';
+
+
+                    if (mod === 'Delete' && !confirm('Really delete this post?')) {
+                        return;
+                    }
+                    $.ajax({
+                        type: 'POST',
+                        url: this.parentNode.action,
+                        data: jQuery(this.parentNode).serialize(),
+                        success: function() {
+                            if (mod === 'Delete'){
+                                $(post).remove();
+                            }
+                            else if (mod === 'Approve'){
+                                $('a.shortlink, form.moderate_spam, form.moderate_approve', post).toggle();
+                                $('div.moderate', post).removeClass('moderate');
+                            }
+                            else if (mod == 'Spam'){
+                                spam_block_display($(post), 'show_spam');
+                            }
+                            else if (mod == 'Undo'){
+                                spam_block_display($(post), 'hide_spam');
+                            }
+                        }
+                    });
+                });
+
+                function spam_block_display($post, display_type) {
+                    var spam_block = $post.find('.info.grid-15.spam-present');
+                    var row = $post.find('.row').eq(0);
+
+                    if (display_type == 'show_spam') {
+                        spam_block.show();
+                        row.hide();
+                    } else if (display_type == 'hide_spam') {
+                        spam_block.hide();
+                        row.show();
+                    }
+                }
+
+                function get_cm($elem) { return $('.CodeMirror', $elem)[0].CodeMirror; }
+
+                if($('a.edit_post', post)){
+                    $('a.edit_post', post).click(function (evt) {
+                        evt.preventDefault();
+                        $('.display_post', post).hide();
+
+                        // remove the options column, but have to adjust the width of the middle section which is
+                        // already hard-coded
+                        var $opts = $('.options:first', post);
+                        var opts_width = $opts.outerWidth(true);
+                        $opts.hide();
+                        var $post_middle = $('div.grid-14:first', post);
+                        $post_middle.data('original-width', $post_middle.width());
+                        $post_middle.width($post_middle.width() + opts_width);
+
+                        var $edit_post_form = $('.edit_post_form', post);
+                        var cm = get_cm($edit_post_form);
+                        $edit_post_form.show();
+                        cm.refresh();
+                        cm.focus();
+                    });
+                    $("a.cancel_edit_post", post).click(function(evt){
+                        $('.display_post', post).show();
+                        $('.options', post).show();
+                        $('.edit_post_form', post).hide();
+                        var $post_middle = $('div.grid-14:first', post);
+                        $post_middle.width($post_middle.data('original-width'));
+                    });
+                }
+                if($('.reply_post', post)){
+                    $('.reply_post', post).click(function (evt) {
+                        evt.preventDefault();
+                        var $reply_post_form = $('.reply_post_form', post);
+                        var cm = get_cm($reply_post_form);
+                        $reply_post_form.show();
+                        cm.focus();
+                    });
+                    $('.reply_post', post).button();
+                }
+                if($('.add_attachment', post)){
+                    $('.add_attachment', post).click(function (evt) {
+                        evt.preventDefault();
+                        $('.add_attachment_form', post).show();
+                    });
+                }
+                if($('.shortlink', post)){
+                    var popup = $('.shortlink_popup', post);
+                    $('.shortlink', post).click(function(evt){
+                        evt.preventDefault();
+                        popup.lightbox_me({
+                            onLoad: function() {
+                                $('input', popup).select();
+                            }
+                        });
+                    });
+                    $('.close', popup).bind('click', function() {
+                        popup.hide();
+                    });
+                }
+            });
+
+            //lightbox_me script to create lightbox of attached images
+            $('.lightbox').click(function(e) {
+                var image_source = $(this).data("src");
+                var image = $('#lightbox').find('img:first');
+                image.attr("src", image_source);
+
+                $('#lightbox').lightbox_me({
+                    centered: true
+                });
+
+                e.preventDefault();
+            });
+        }());
+        
+$(function () {
+            $('select.results_per_page').change(function () {
+                this.form.submit();});});
+$(function () {
+          $('input.label_edit').tagsInput({
+              'height':'100%',
+              'width':'100%',
+              'autocomplete_url':'/p/sevenzip/bugs/tags'
+          });
+          $('form').on('blur', '.ui-autocomplete-input', function() {
+              setTimeout(function(){
+                  var clicked = $(document.activeElement); // This is the element that has focus
+                  if (clicked.is('#ui-active-menuitem')) {
+                      return false;
+                  } else {
+                      var value = $('div.tagsinput div input').val();
+                      var exists = $('input.label_edit').tagExist(value);
+                      var default_value = $('div.tagsinput div input').attr('data-default');
+                      if ((value !== default_value) && (!exists) && value !== '') {
+                          $('input.label_edit').addTag(value);
+                      }
+                      $('input[type=submit]', this).prop('disabled', true);
+                  }
+                }, 1);
+            });
+        });
+
+        $(document).ready(function () {
+            var thread_tag = $('a.thread_tag');
+            var thread_spam = $('a.sidebar_thread_spam');
+            var tag_thread_holder = $('#tag_thread_holder');
+            var allow_moderate = $('#allow_moderate');
+            var mod_thread_link = $('#mod_thread_link');
+            var mod_thread_form = $('#mod_thread_form');
+            if (mod_thread_link.length) {
+                if (mod_thread_form.length) {
+                    mod_thread_link.click(function (e) {
+                        mod_thread_form.show();
+                        return false;
+                    });
+                }
+            }
+            if (thread_tag.length) {
+                if (tag_thread_holder.length) {
+                    var submit_button = $('input[type="submit"]', tag_thread_holder);
+                    var cancel_button = $('<a href="#" class="btn link">Cancel</a>').click(function(evt){
+                        evt.preventDefault();
+                        tag_thread_holder.hide();
+                        thread_tag.removeClass('active');
+                    });
+                    submit_button.after(cancel_button);
+                    thread_tag.click(function (e) {
+                        tag_thread_holder.show();
+                        thread_tag.addClass('active');
+                        // focus the submit to scroll to the form, then focus the subject for them to start typing
+                        submit_button.focus();
+                        $('input[type="text"]', tag_thread_holder).focus();
+                        return false;
+                    });
+                }
+            }
+            if (thread_spam.length) {
+                if (allow_moderate.length) {
+                    thread_spam[0].style.display='block';
+                }
+            }
+        });
+        
+$(function () {
+          $('select.project-user-combobox').combobox({
+            source_url: "/p/sevenzip/users"
+          });});
+
+        // Sometimes IE11 is not firing jQuery's ready callbacks like
+        // "$(function(){...})" or "$(document).ready(function(){...});"
+        $(window).load(function(){
+            $('#show_attach').click(function(evt) {
+                $('#view_attach').show();
+                $('#show_attach').hide();
+                evt.preventDefault();
+            });
+            $('form').submit(function() {
+                $('input[type=submit]', this).prop('disabled', true);
+            });
+            $('div.reply.discussion-post a.markdown_preview').click(function(){
+                var arrow = $(this).closest('.discussion-post').find('span.arw');
+                arrow.hide();
+            });
+            $('div.reply.discussion-post a.markdown_edit').click(function(){
+                var arrow = $(this).closest('.discussion-post').find('span.arw');
+                arrow.show();
+            });
+        });</script>
+
+    
+<!-- /ew:body_js_tail -->
+
+
+
+  
+
+
+    
+
+
+    
+        <script type="text/javascript" src='//consent-st.truste.com/get?name=notice.js&domain=slashdot.org&c=teconsent&text=true'></script>
+    
+    
+
+<script>
+    $(document).ready(function () {
+        $(".tooltip").tooltipster({
+            animation: 'fade',
+            delay: 200,
+            theme: 'tooltipster-light',
+            trigger: 'hover',
+            position: 'right',
+            iconCloning: false,
+            maxWidth: 300
+        }).f
