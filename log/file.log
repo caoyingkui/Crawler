@@ -1,9 +1,5 @@
-[EOS]ERROR 2016-11-15 21:30:10,846 - error from class "SourceforgeCrawler" when get bug: https://sourceforge.net/p/sevenzip/bugs/646/
-
-[EOS]ERROR 2016-11-15 21:30:10,847 - 
-[EOS]ERROR 2016-11-15 21:36:05,661 - error from class "SourceforgeCrawler" when get bug: https://sourceforge.net/p/sevenzip/bugs/856/
-
-[EOS]ERROR 2016-11-15 21:36:05,661 - 
-[EOS]ERROR 2016-11-15 21:36:11,153 - error from class "SourceforgeCrawler" when get bug: https://sourceforge.net/p/sevenzip/bugs/858/
-
-[EOS]ERROR 2016-11-15 21:36:11,153 - 
+[EOS]WARN  2016-11-25 14:58:09,283 - warnning : There has been a diretory with the same path :"d:\"
+[EOS]WARN  2016-11-25 14:58:09,283 - warnning : There has been a diretory with the same path :"d:\\summary"
+[EOS]WARN  2016-11-25 14:58:09,285 - warnning : There has been a diretory with the same path :"d:\\bugs"
+[EOS]WARN  2016-11-25 14:58:09,285 - warnning : There has been a diretory with the same path :"d:\\patchs"
+[EOS]WARN  2016-11-25 14:58:09,285 - warnning : There has been a diretory with the same path :"d:\\features-request"

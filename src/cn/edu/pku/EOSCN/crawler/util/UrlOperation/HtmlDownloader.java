@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
@@ -58,15 +59,23 @@ public class HtmlDownloader {
 	 		byte[] c = new byte[2];
 	 		c[0]=0x0d;
 	 		c[1]=0x0a; 
+	 		InputStream is = conn.getInputStream();
 	 		String c_string = new String(c);   
-	 		while ( (line = reader.readLine()) != null) { 
-	 			document.append( line+c_string );
+            byte[] b = new byte[4096]; 
+            for (int n; (n = is.read(b)) != -1;)   { 
+            	document.append(new String(b, 0, n));
 	 			if (document.length() > 100000000){
 	 				reader.close();
 	 				return "";
-	 			}
-	 		} 
-	 		reader.close(); 
+	 			}            	
+            } 
+//	 		while ( (line = reader.readLine()) != null) { 
+//	 			document.append( line+c_string );
+//	 			if (document.length() > 100000000){
+//	 				reader.close();
+//	 				return "";
+//	 			}
+//	 		} 
 	 		}  
 	 	catch (IOException e) { 
 	 		System.out.println("IOException when connecting to URL: " + urlString);
