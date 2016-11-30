@@ -17,6 +17,7 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -35,9 +36,15 @@ import org.htmlparser.nodes.TagNode;
 import org.htmlparser.nodes.TextNode;
 import org.htmlparser.tags.ParagraphTag;
 import org.htmlparser.tags.Span;
+import org.htmlparser.tags.TableColumn;
+import org.htmlparser.tags.TableHeader;
+import org.htmlparser.tags.TableRow;
+import org.htmlparser.tags.TableTag;
 import org.htmlparser.util.NodeIterator;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
+import org.htmlparser.util.SimpleNodeIterator;
+import org.openqa.jetty.html.Table;
 import org.htmlparser.tags.BodyTag;
 import org.htmlparser.tags.Bullet;
 import org.htmlparser.tags.BulletList;
@@ -57,7 +64,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class SourceforgeCrawler extends Crawler {
-	private final String SF_URL_BASE = "https://sourceforge.net/";
+	private final String SF_URL_BASE = "https://sourceforge.net";
 	
 	private final String SF_URL_PREFIX = "https://sourceforge.net/p/";
 	
@@ -68,11 +75,16 @@ public class SourceforgeCrawler extends Crawler {
 	private final String SF_URL_POSTFIX_FEATUREREQUEST = "feature-requests/";
 	
 	
-	private final String SF_URL_PROJECT_HOME_PAGE = "https://sourceforge.net/projects/projectName/";
+	private final String SF_URL_PROJECT_HOME_PAGE = "https://sourceforge.net/projects/projectName";
 	private final String SF_URL_PROJECT_FILES = "https://sourceforge.net/projects/projectName/files";
 	private final String SF_URL_PROJECT_BUGS = "";
 	private final String SF_URL_PROJECT_PATCHS = "";
 	private final String SF_URL_PROJECT_VIEWS = "https://sourceforge.net/projects/projectName/reviews";
+	private final String SF_URL_PROJECT_MAILS = "https://sourceforge.net/p/projectName/mailman";
+	
+	
+	private final String SF_URL_SINGLE_MAIL = "https://sourceforge.net/p/projectName/mailman/message/serialNumber";
+	
 	
 	//this url is used to get user view about a project
 	//the keywords projectName and offsetNumber when you wang to use it.
@@ -101,6 +113,7 @@ public class SourceforgeCrawler extends Crawler {
 	private String storagePatchPath;
 	private String storageViewPath;
 	private String storageFeatureRequestPath;
+	private String storageMailListPath;
 	
 	
 	
@@ -260,8 +273,10 @@ public class SourceforgeCrawler extends Crawler {
 		//crawler.getBug("https://sourceforge.net/p/sevenzip/bugs/1664/" , "d:\\");
 		
 		//crawler.findAllInfomationKindForProject("sevenzip");
-		crawler.crawlReviews();
-		
+		//crawler.getMailArchive("" , "");
+		//
+		//crawler.getMailURL("");
+		crawler.crawlMail();
 		/*String file = HtmlDownloader.downloadOrin("http://jaist.dl.sourceforge.net/project/npppluginmgr/xml/plugins.zip", null);
 		
 		File f = new File("d:\\plugins.zip");
@@ -995,6 +1010,217 @@ public class SourceforgeCrawler extends Crawler {
 		getOneOfTheTickets(Tickets.PATCH);
 	}
 	
+	public void crawlMail(){
+		//String mailMainPageURL = SF_URL_PROJECT_MAILS.replace("projectName", projectName);
+		String mailMainPageURL = "https://sourceforge.net/p/portableapps/mailman";
+		storageMailListPath = "d:\\test";
+		
+		String mailMainPageText ;
+		Map<String , String> archives = new HashMap<String , String>();
+		NodeList linkList;
+		int listLength;
+		
+		try{
+			mailMainPageText = HtmlDownloader.downloadOrin(mailMainPageURL, null);
+			NodeClassFilter linkFilter = new NodeClassFilter(LinkTag.class);
+			Parser parser = new Parser(mailMainPageText);
+			linkList = parser.extractAllNodesThatMatch(linkFilter);
+			listLength = linkList.size();
+			
+			//one project may have more than one mail archive,
+			for(int i = 0 ; i < listLength ; i++)
+			{
+				LinkTag archive = (LinkTag)linkList.elementAt(i);
+				if(archive.getStringText().trim().compareTo("Archive") == 0){
+					Bullet parentNode = (Bullet)archive.getParent();
+					String archiveName = parentNode.getStringText().split(":")[0].trim();
+					String link = archive.getLink();
+					if(link.charAt(0) != '/')
+							link = "/" + link;
+					link = SF_URL_PROJECT_MAILS + link;
+					archives.put(link, archiveName);
+				}
+			}
+			
+			for(String archiveURL : archives.keySet()){
+				String archiveName = archives.get(archiveURL);
+				String storePath = storageMailListPath + "\\" + archiveName ;
+				makeDir(storePath);
+				
+				Map<String , String> mailURLPerMonth = getMailURLForPerMonth(archiveURL , archiveName);
+				for(String url : mailURLPerMonth.keySet()){
+					String month = mailURLPerMonth.get(url);
+					makeDir(storePath + "\\" + month);
+					
+					Set<String> mailSet = getMailURL(url);
+					for( Iterator it = mailSet.iterator(); it.hasNext() ; ){
+						String mailUrl =(String) it.next();
+						String mail = HtmlDownloader.downloadOrin(mailUrl, null);
+						String fileName = mailUrl.substring(mailUrl.lastIndexOf("/") , mailUrl.length());
+						WriteIntoFile(storePath + "\\" + month + "\\" + fileName + ".html" ,  mail );
+					}
+					
+				}
+				
+			}
+			
+		}
+		catch(Exception e){
+			logger.error(e.getMessage());
+			
+		}
+	}
+	
+	public Map<String , String> getMailURLForPerMonth(String archiveURL , String archiveName){
+		archiveURL = "https://sourceforge.net/p/azureus/mailman/azureus-commitlog";
+
+		String archiveMainPageText ;
+		Map<String , String> mailURLPerMonth = new HashMap<String , String>();//format <URL , month>
+		
+		try{
+			archiveMainPageText = HtmlDownloader.downloadOrin(archiveURL, null);
+			Parser parser = new Parser(archiveMainPageText);
+			NodeClassFilter tableTag = new NodeClassFilter(TableTag.class);
+			NodeList tableList = parser.extractAllNodesThatMatch(tableTag);
+			int tableNodeNumber = tableList.size();
+			for(int i = 0 ; i < tableNodeNumber ; i++){
+				TableTag temp = (TableTag)tableList.elementAt(i);
+				if(temp.getAttribute("class").compareTo("calendar-month") == 0){
+					
+					NodeList rowList = temp.getChildren();
+					int rowListNumber = rowList.size();
+					for(int j = 0 ; j < rowListNumber ; j++){
+						if(rowList.elementAt(j) instanceof TableRow){
+							Node node = rowList.elementAt(j).getFirstChild();
+							while(node != null){
+								if(node instanceof TableColumn){
+									SimpleNodeIterator it = ((TableColumn)node).elements();
+									while(it.hasMoreNodes()){
+										Node n = it.nextNode();
+										if(n instanceof LinkTag){
+											
+											//mailLink may like this one "/p/azureus/mailman/azureus-commitlog/?viewmonth=200505"
+											String mailLink = ((LinkTag) n).getLink();
+											String numberString = ((LinkTag) n).getStringText();
+											numberString = numberString.replaceAll("[\\(\\)]", "");
+											int mailNumber = Integer.parseInt(numberString);
+											System.out.println(mailNumber);
+											mailURLPerMonth.put(SF_URL_BASE + mailLink , mailLink.substring(mailLink.length() - 6 , mailLink.length()) );
+											System.out.println(SF_URL_BASE + mailLink + "   "+ mailLink.substring(mailLink.length() - 6 , mailLink.length()));
+										}
+									}
+									
+								}
+								node = node.getNextSibling();
+							}					
+						}
+					}
+					
+				}
+			}
+					
+		}catch(Exception e){
+			logger.error(e.getMessage());
+		}
+		
+		
+		return mailURLPerMonth;
+	}
+	
+	public Set<String> getMailURL(String monthMailURL){
+
+		//there will be a lot mails in a month , so it will be hard to present all the mail in a single page
+		//then , there will be more than one page for a month
+		int  ccc = 0;
+		Set<String> mailURL = new HashSet<String>(); // format<url , month>
+		Set pageSet = new HashSet();
+		projectName = "azureus";
+		monthMailURL = "https://sourceforge.net/p/azureus/mailman/azureus-commitlog/?viewmonth=200505";
+		//find all the page
+		try{
+			String webPageText = HtmlDownloader.downloadOrin(monthMailURL, null);
+			Parser parser = new Parser(webPageText);
+			NodeClassFilter paragraphFilter = new NodeClassFilter(ParagraphTag.class);
+			NodeList paragraphNodeList = parser.extractAllNodesThatMatch(paragraphFilter);
+			int paragraphListSize = paragraphNodeList.size();
+			Pattern pattern = Pattern.compile("results of ([0-9]+)");
+			Matcher matcher;
+			int mailCount = 0;
+			int mailPageCount = 0;
+			
+			for(int i = 0 ; i < paragraphListSize ; i++){
+				ParagraphTag node = (ParagraphTag)paragraphNodeList.elementAt(i);
+				String p = node.getStringText();
+				matcher = pattern.matcher(p);
+				if(matcher.find()){
+					mailCount = Integer.parseInt( matcher.group(1).toString() );
+				}
+			}
+			
+			mailPageCount = mailCount / 250;
+			if(mailCount % 250 != 0){
+				mailPageCount ++;
+			}
+			
+			for(int i = 0 ; i <= mailPageCount ; i++){
+				String constructMailURL = monthMailURL + "&limit=250&page=" + i;
+				pageSet.add(constructMailURL);
+			}	
+		}catch(Exception e){
+			logger.error(e.getMessage());
+		}
+
+		try{
+			String webPageText ;
+			for(Iterator<String> it = pageSet.iterator() ; it.hasNext() ; ){
+				String url = it.next();
+				webPageText = HtmlDownloader.downloadOrin(url, null);
+				Parser parser = new Parser(webPageText);
+				NodeClassFilter tableFilter = new NodeClassFilter(TableTag.class);
+				NodeList tableList = parser.extractAllNodesThatMatch(tableFilter);
+				
+				int tableListSize = tableList.size();
+				for(int i = 0 ; i < tableListSize ; i++){
+					TableTag node = (TableTag)tableList.elementAt(i);
+					String id = node.getAttribute("id");
+					
+					if(id != null && id.contains("msg")){
+						String mailNumber = id.replaceAll("msg", "");
+						String singleMailUrl = SF_URL_SINGLE_MAIL.replace("projectName", projectName);
+						singleMailUrl = singleMailUrl.replaceAll("serialNumber", mailNumber);
+						mailURL.add(singleMailUrl);
+					}
+				}
+			}
+			
+			
+		}catch(Exception e){
+			logger.error(e.getMessage());
+		}
+		return mailURL;
+	}
+
+	public boolean WriteIntoFile(String absolutePath , String fileContent){
+		boolean result = true;
+		try{
+			File file = new File(absolutePath);
+			if(file.exists()){
+				result = false;
+			}
+			else{
+				file.createNewFile();
+				FileOutputStream out = new FileOutputStream(file);
+				byte[] bytes = fileContent.getBytes();
+				out.write(bytes, 0, bytes.length);
+				out.close();
+			}
+		}catch(Exception e){
+			logger.error(e.getMessage());
+			result = false;
+		}
+		
+		return result;
+	}
 }	
 	
 	
